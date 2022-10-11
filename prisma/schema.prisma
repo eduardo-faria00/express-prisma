@@ -11,31 +11,19 @@ datasource db {
 }
 
 model Product {
-  id              String            @id @default(uuid())
+  id              String   @id @default(uuid())
   name            String
   price           Decimal
-  ProductCategory ProductCategory[]
+  category_id     String
+  ProductCategory Category @relation(fields: [category_id], references: [id])
 
   @@map("products")
 }
 
 model Category {
-  id   String @id @default(uuid())
-  name String
-
-  ProductCategory ProductCategory[]
+  id       String    @id @default(uuid())
+  name     String
+  products Product[]
 
   @@map("categories")
-}
-
-model ProductCategory {
-  id String @id @default(uuid())
-
-  id_product String
-  product    Product @relation(fields: [id_product], references: [id])
-
-  id_category String
-  category    Category @relation(fields: [id_category], references: [id])
-
-  @@map("products_categories")
 }
